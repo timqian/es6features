@@ -1,21 +1,31 @@
-// 为不同的数据接口提供统一的访问机制，使用for...of做遍历
-
-let fibonacci = {
+// 为adding 对象部署Symbol.iterator方法
+let adding = {
   [Symbol.iterator]() {
-    let pre = 0;
-    let cur = 1;
+    let cur = 0;
     return {
       next() {
-        [pre, cur] = [cur, pre + cur];
+        cur++;
         return { done: false, value: cur };
       },
     };
   },
 };
 
-for (let n of fibonacci) {
-  // truncate the sequence at 1000
-  if (n > 1000)
-    break;
+// for...of循环内部调用的是数据结构的Symbol.iterator方法。
+for (let n of adding) {
+  // truncate the sequence at 10
+  if (n > 10) break;
   console.log(n);
 }
+
+// interface:
+// interface IteratorResult {
+//   done: boolean;
+//   value: any;
+// }
+// interface Iterator {
+//   next(): IteratorResult;
+// }
+// interface Iterable {
+//   [Symbol.iterator](): Iterator
+// }
